@@ -1,0 +1,79 @@
+import ctypes
+
+list_id = ["Hi dady", "Hi momy"]
+set_id = {"Hi dady", "Hi momy"}
+dict_id = {1:"Hi dady", 2:"Hi momy"}
+
+class CommonList:
+    def __init__(self):
+        self._length = 0
+        self._capacity = 1
+        self._array = self.make_array(self._capacity)
+
+    def __len__(self):
+        return self._length
+
+    def __getitem__(self, index):
+        if not 0 <= index < self._length:
+            raise IndexError("Out of range")
+        return self._array[index]
+
+    def append_to_common_list(self,item):
+        if self._length == self._capacity:
+            self._resize(2*self._capacity)
+
+        self._array[self._length] = item
+        self._length += 1
+
+    def _resize(self,new_capacity):
+        #создание нового списка
+        new_array = self.make_array(new_capacity)
+        #Копирование старых элементов в новый список
+        for i in range(self._length):
+            new_array[i] = self._array[i]
+
+        self._array = new_array
+        self._capacity = new_capacity
+
+    def make_array(self, capacity):
+
+        return (capacity * ctypes.py_object)()
+
+    def __repr__(self):
+        items = [str(self._array[i]) for i in range(self._length)]
+        return "#" + ' & '.join(items) + "#"
+
+my_common_list = CommonList()
+my_common_list.append_to_common_list("Hi dady")
+my_common_list.append_to_common_list("Hi momy")
+print(my_common_list)
+
+id_my_list = id(my_common_list)
+id_list = id(list_id)
+id_set = id(set_id)
+id_dict = id(dict_id)
+
+my_list_2 = my_common_list
+list_id_2 = list_id
+set_id_2 = set_id
+dict_id_2 = dict_id
+
+print(iter(my_common_list))
+print(iter(list_id))
+print(iter(set_id))
+print(iter(dict_id))
+
+my_common_list.append_to_common_list("Hi all")
+list_id.append("Hi all")
+set_id.add("Hi all")
+dict_id[3] = "Hi all"
+
+print(id(my_common_list) == id_my_list)
+print(id(list_id) == id_list)
+print(id(set_id) == id_set)
+print(id(dict_id) == id_dict)
+
+print(iter(my_common_list) == iter(my_list_2))
+print(iter(list_id) == iter(list_id_2))
+print(iter(set_id) == iter(set_id_2))
+print(iter(dict_id) == iter(dict_id_2))
